@@ -107,8 +107,6 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     }
 
     private void initBase() {
-        textSizeOff = dp2px(textSizeOff);
-        textSizeOn = dp2px(textSizeOn);
         initPaint();
         setOnClickListener(this);
         post(new Runnable() {
