@@ -84,7 +84,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         trackColorOff = typedArray.getColor(R.styleable.BaseSwitch_track_color_off, Color.parseColor("#F8933B"));
         thumbColorOff = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_off, Color.WHITE);
         textColorOff = typedArray.getColor(R.styleable.BaseSwitch_text_color_off, Color.WHITE);
-        textSizeOff = typedArray.getFloat(R.styleable.BaseSwitch_text_color_off, 10);
+        textSizeOff = typedArray.getFloat(R.styleable.BaseSwitch_text_size_off, 10);
         textOff = typedArray.getString(R.styleable.BaseSwitch_text_off);
         if(textOff==null){
             textOff = "开";
@@ -95,7 +95,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#BECBE4"));
         thumbColorOn = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_on, Color.WHITE);
         textColorOn = typedArray.getColor(R.styleable.BaseSwitch_text_color_on, Color.WHITE);
-        textSizeOn = typedArray.getFloat(R.styleable.BaseSwitch_text_color_on, 10);
+        textSizeOn = typedArray.getFloat(R.styleable.BaseSwitch_text_size_off, 10);
         textOn = typedArray.getString(R.styleable.BaseSwitch_text_on);
         if(textOn==null){
             textOn = "关";
