@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -85,6 +86,10 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         textColorOff = typedArray.getColor(R.styleable.BaseSwitch_text_color_off, Color.WHITE);
         textSizeOff = typedArray.getFloat(R.styleable.BaseSwitch_text_color_off, 10);
         textOff = typedArray.getString(R.styleable.BaseSwitch_text_off);
+        if(textOff==null){
+            textOff = "开";
+        }
+
 
         //on
         trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#BECBE4"));
@@ -92,6 +97,9 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         textColorOn = typedArray.getColor(R.styleable.BaseSwitch_text_color_on, Color.WHITE);
         textSizeOn = typedArray.getFloat(R.styleable.BaseSwitch_text_color_on, 10);
         textOn = typedArray.getString(R.styleable.BaseSwitch_text_on);
+        if(textOn==null){
+            textOn = "关";
+        }
 
         //其它属性
         isShowText = typedArray.getBoolean(R.styleable.BaseSwitch_text_show, false);
@@ -201,12 +209,12 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
      * @param startValue 开始的值
      * @param endValue 结束的值
      */
-    protected void startAnimator(float startValue, float endValue) {
+    protected void startAnimator(float startValue, float endValue){
         ValueAnimator animator = ValueAnimator.ofFloat(startValue, endValue);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                animatorValue = (float) animation.getAnimatedValue();
+                animatorValue = (float)animation.getAnimatedValue();
                 invalidate();
             }
         });
@@ -224,6 +232,9 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
      * @return
      */
     protected int getTextWidth(Paint paint, String text){
+        if(TextUtils.isEmpty(text)){
+            return 0;
+        }
         Rect rect = new Rect();
         paint.getTextBounds(text, 0, text.length(), rect);
         return rect.width();
