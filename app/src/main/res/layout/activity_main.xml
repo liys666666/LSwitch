@@ -15,6 +15,12 @@
         app:text_show="true"
         app:text_size_off="18sp"
         app:text_size_on="18dp"/>
+    <com.liys.lswitch.LSwitch
+        android:layout_width="100px"
+        android:layout_height="40px"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        app:checked="true"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

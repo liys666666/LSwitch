@@ -86,7 +86,6 @@ public class LSwitch extends BaseSwitch{
         int thumbTop = (mHeight-thumbHeight)/2;
         int thumbBottom = thumbTop+thumbHeight;
         canvas.drawRoundRect(new RectF(animatorValue, thumbTop, animatorValue+thumbWidth, thumbBottom), thumbRadius, thumbRadius, paintThumb);
-
         //绘制文字
         drawText(canvas);
     }

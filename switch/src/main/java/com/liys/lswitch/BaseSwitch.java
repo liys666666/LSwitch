@@ -117,8 +117,8 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
             public void run() {
                 mWidth = getMeasuredWidth();
                 mHeight = getMeasuredHeight();
-                animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
                 postInit();
+                animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
                 invalidate();
             }
         });
