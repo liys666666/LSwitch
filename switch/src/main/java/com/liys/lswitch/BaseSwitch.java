@@ -50,6 +50,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
 
     //动画
     protected float animatorValue = 0; //动画变化的值
+    protected long animatorDuration = 0; //动画时间
 
     public BaseSwitch(Context context) {
         this(context, null);
@@ -66,12 +67,13 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         initBase();
     }
 
-    protected abstract void init();
-    protected abstract float getAnimatorValueOff();
-    protected abstract float getAnimatorValueOn();
+    protected abstract void postInit();
+    protected abstract float getAnimatorValueOff(); //动画开始的值
+    protected abstract float getAnimatorValueOn(); //动画结束的值
 
-    protected void unChecked(){}
-    protected void checked(){}
+    protected void animatorEnd(){} //动画结束--执行的方法
+    protected void unChecked(){} //选中--执行的方法
+    protected void checked(){}  //未选中--执行的方法
 
     /**
      * 初始化属性
@@ -84,7 +86,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         trackColorOff = typedArray.getColor(R.styleable.BaseSwitch_track_color_off, Color.parseColor("#F8933B"));
         thumbColorOff = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_off, Color.WHITE);
         textColorOff = typedArray.getColor(R.styleable.BaseSwitch_text_color_off, Color.WHITE);
-        textSizeOff = typedArray.getDimensionPixelSize(R.styleable.BaseSwitch_text_size_off, 10);
+        textSizeOff = typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_text_size_off, 10);
         textOff = typedArray.getString(R.styleable.BaseSwitch_text_off);
         if(textOff==null){
             textOff = "开";
@@ -95,7 +97,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#BECBE4"));
         thumbColorOn = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_on, Color.WHITE);
         textColorOn = typedArray.getColor(R.styleable.BaseSwitch_text_color_on, Color.WHITE);
-        textSizeOn = typedArray.getDimensionPixelSize(R.styleable.BaseSwitch_text_size_off, 10);
+        textSizeOn = typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_text_size_off, 10);
         textOn = typedArray.getString(R.styleable.BaseSwitch_text_on);
         if(textOn==null){
             textOn = "关";
@@ -104,6 +106,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         //其它属性
         isShowText = typedArray.getBoolean(R.styleable.BaseSwitch_text_show, false);
         isChecked = typedArray.getBoolean(R.styleable.BaseSwitch_checked, true);
+        animatorDuration = typedArray.getInteger(R.styleable.BaseSwitch_animator_duration, 300);
     }
 
     private void initBase() {
@@ -115,7 +118,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
                 mWidth = getMeasuredWidth();
                 mHeight = getMeasuredHeight();
                 animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
-                init();
+                postInit();
                 invalidate();
             }
         });
@@ -173,11 +176,11 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         }
         this.isChecked = isChecked;
         if(isChecked){
-            setPaintOff();
+//            setPaintOff();
             startAnimator(getAnimatorValueOn(), getAnimatorValueOff());
             checked();
         }else{
-            setPaintOn();
+//            setPaintOn();
             startAnimator(getAnimatorValueOff(), getAnimatorValueOn());
             unChecked();
         }
@@ -207,21 +210,30 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
      * @param startValue 开始的值
      * @param endValue 结束的值
      */
-    protected void startAnimator(float startValue, float endValue){
+    protected void startAnimator(final float startValue, final float endValue){
         ValueAnimator animator = ValueAnimator.ofFloat(startValue, endValue);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 animatorValue = (float)animation.getAnimatedValue();
+
+                //判断是否超过中间值
+                if(Math.abs(startValue-animatorValue)>Math.abs(endValue-animatorValue)){ //超过一半
+                    if(isChecked){
+                        setPaintOff();
+                    }else{
+                        setPaintOn();
+                    }
+                }
+
+                if(animatorValue==endValue){ //动画结束
+                    animatorEnd();
+                }
                 invalidate();
             }
         });
-        animator.setDuration(getAnimatorDuration()); //时间
+        animator.setDuration(animatorDuration); //时间
         animator.start();
-    }
-
-    public long getAnimatorDuration(){ //动画时间, 子类可重写
-        return 300;
     }
 
     /**
@@ -242,16 +254,59 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getResources().getDisplayMetrics());
     }
 
-    protected float dp2px(float sp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sp, getResources().getDisplayMetrics());
-    }
-
-    public interface LAnimatorListener {
-        void onAnimationUpdate(float value, String type);
+    protected int dp2px(float sp) {
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sp, getResources().getDisplayMetrics());
     }
 
     //监听选中情况
     public interface OnCheckedListener{
         void onChecked(boolean isChecked);
+    }
+
+
+
+    //对应的set方法 单位:dp sp
+    public void setTrackColorOff(int trackColorOff) {
+        this.trackColorOff = trackColorOff;
+    }
+
+    public void setTrackColorOn(int trackColorOn) {
+        this.trackColorOn = trackColorOn;
+    }
+
+    public void setThumbColorOff(int thumbColorOff) {
+        this.thumbColorOff = thumbColorOff;
+    }
+
+    public void setThumbColorOn(int thumbColorOn) {
+        this.thumbColorOn = thumbColorOn;
+    }
+
+    public void setTextOff(String textOff) {
+        this.textOff = textOff;
+    }
+
+    public void setTextOn(String textOn) {
+        this.textOn = textOn;
+    }
+
+    public void setTextSizeOff(float textSizeOff) {
+        this.textSizeOff = sp2px(textSizeOff);
+    }
+
+    public void setTextSizeOn(float textSizeOn) {
+        this.textSizeOn = sp2px(textSizeOn);
+    }
+
+    public void setTextColorOff(int textColorOff) {
+        this.textColorOff = textColorOff;
+    }
+
+    public void setTextColorOn(int textColorOn) {
+        this.textColorOn = textColorOn;
+    }
+
+    public void setAnimatorDuration(long animatorDuration) {
+        this.animatorDuration = animatorDuration;
     }
 }

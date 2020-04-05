@@ -18,5 +18,16 @@
         <!--其它属性-->
         <attr format="boolean" name="checked"/>
         <attr format="boolean" name="text_show"/>
+        <attr format="integer" name="animator_duration"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="LSwitch">
+        <attr format="dimension" name="track_radius" />
+        <attr format="dimension" name="track_height" />
+
+        <attr format="dimension" name="thumb_radius" />
+        <attr format="dimension" name="thumb_height" />
+        <attr format="dimension" name="thumb_width" />
     </declare-styleable>
 </resources>
