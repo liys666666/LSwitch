@@ -78,16 +78,43 @@ public class LSwitch extends BaseSwitch{
         super.onDraw(canvas);
 
         //track
+        drawTrack(canvas);
+        //thumb
+        drawThumb(canvas);
+        //边框
+        drawStroke(canvas);
+        //绘制文字
+        drawText(canvas);
+    }
+
+    /**
+     *  track
+     * @param canvas
+     */
+    public void drawTrack(Canvas canvas) {
         int trackTop = (mHeight-trackHeight)/2;
         int trackBottom = trackTop+trackHeight;
-        canvas.drawRoundRect(new RectF(0, trackTop, mWidth, trackBottom), trackRadius, trackRadius, paintTrack);
+        canvas.drawRoundRect(new RectF(strokeWidth, trackTop+strokeWidth, mWidth-strokeWidth, trackBottom-strokeWidth), trackRadius, trackRadius, paintTrack);
+    }
 
-        //thumb
+    /**
+     * Thumb
+     * @param canvas
+     */
+    public void drawThumb(Canvas canvas) {
         int thumbTop = (mHeight-thumbHeight)/2;
         int thumbBottom = thumbTop+thumbHeight;
         canvas.drawRoundRect(new RectF(animatorValue, thumbTop, animatorValue+thumbWidth, thumbBottom), thumbRadius, thumbRadius, paintThumb);
-        //绘制文字
-        drawText(canvas);
+    }
+
+    /**
+     * 边框
+     * @param canvas
+     */
+    public void drawStroke(Canvas canvas) {
+//        int trackTop = (mHeight-trackHeight)/2;
+//        int trackBottom = trackTop+trackHeight;
+//        canvas.drawRoundRect(new RectF(0, trackTop, mWidth, trackBottom), trackRadius, trackRadius, paintStroke);
     }
 
     /**

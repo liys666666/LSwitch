@@ -30,11 +30,16 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     //底部背景
     protected Paint paintTrack = new Paint(); //底部背景
     protected Paint paintThumb = new Paint(); //可滚动部分
+    protected Paint paintStroke = new Paint(); //边框
     //对应颜色(打开/关闭)
     protected int trackColorOff;
     protected int trackColorOn;
     protected int thumbColorOff;
     protected int thumbColorOn;
+    //边框
+    protected int strokeColorOff;
+    protected int strokeColorOn;
+    protected int strokeWidth;
 
     //文字
     protected Paint paintText = new Paint();
@@ -92,6 +97,10 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
             textOff = "开";
         }
 
+        //stroke属性
+        strokeColorOff =  typedArray.getColor(R.styleable.BaseSwitch_stroke_color_off, Color.GRAY);
+        strokeColorOn =  typedArray.getColor(R.styleable.BaseSwitch_stroke_color_on, Color.GRAY);
+        strokeWidth =  typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_stroke_width, dp2px(1));
 
         //on
         trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#BECBE4"));
@@ -130,7 +139,10 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     private void initPaint(){
         paintTrack.setAntiAlias(true);
         paintThumb.setAntiAlias(true);
+        paintStroke.setAntiAlias(true);
         paintText.setAntiAlias(true);
+        paintStroke.setStrokeWidth(strokeWidth);
+        paintStroke.setStyle(Paint.Style.STROKE);
         if(isChecked){
             setPaintOff();
         }else{
@@ -145,6 +157,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         paintTrack.setColor(trackColorOff);
         paintThumb.setColor(thumbColorOff);
         paintText.setColor(textColorOff);
+        paintStroke.setColor(strokeColorOff);
         paintText.setTextSize(textSizeOff);
     }
 
@@ -156,6 +169,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         paintThumb.setColor(thumbColorOn);
         paintText.setColor(textColorOn);
         paintText.setTextSize(textSizeOn);
+        paintStroke.setColor(strokeColorOn);
     }
 
     public void setOnCheckedListener(OnCheckedListener onCheckedListener) {
