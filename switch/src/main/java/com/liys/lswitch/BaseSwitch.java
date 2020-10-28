@@ -121,16 +121,26 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     private void initBase() {
         initPaint();
         setOnClickListener(this);
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mWidth = getMeasuredWidth();
-                mHeight = getMeasuredHeight();
-                postInit();
-                animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
-                invalidate();
-            }
-        });
+//        post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mWidth = getMeasuredWidth();
+//                mHeight = getMeasuredHeight();
+//                postInit();
+//                animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
+//                invalidate();
+//            }
+//        });
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
+        postInit();
+        animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
+        invalidate();
     }
 
     /**
