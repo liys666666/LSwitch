@@ -1,10 +1,11 @@
 package com.liys.lswitchs;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
 
 import com.liys.lswitch.LSwitch;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
