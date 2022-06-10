@@ -64,12 +64,21 @@ public class LSwitch extends BaseSwitch{
 
     @Override
     protected float getAnimatorValueOff() {
-        return getMeasuredWidth()-thumbWidth;
+        int value = getMeasuredWidth()-thumbWidth-(trackHeight-thumbHeight)/2;
+        if(value<0){
+            value=0;
+        }
+        return value;
+//        return getMeasuredWidth()-thumbWidth;
     }
 
     @Override
     protected float getAnimatorValueOn() {
-        return 0;
+        int value = (trackHeight-thumbHeight)/2;
+        if(value<0){
+            value=0;
+        }
+        return value;
     }
 
     @SuppressLint("DrawAllocation")

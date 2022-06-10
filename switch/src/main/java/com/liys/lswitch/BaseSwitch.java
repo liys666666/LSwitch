@@ -118,7 +118,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         animatorDuration = typedArray.getInteger(R.styleable.BaseSwitch_animator_duration, 300);
     }
 
-    private void initBase() {
+    protected void initBase() {
         initPaint();
         setOnClickListener(this);
 //        post(new Runnable() {
@@ -146,7 +146,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     /**
      * 初始化画笔
      */
-    private void initPaint(){
+    protected void initPaint(){
         paintTrack.setAntiAlias(true);
         paintThumb.setAntiAlias(true);
         paintStroke.setAntiAlias(true);
@@ -163,7 +163,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     /**
      * 打开
      */
-    private void setPaintOff(){
+    protected void setPaintOff(){
         paintTrack.setColor(trackColorOff);
         paintThumb.setColor(thumbColorOff);
         paintText.setColor(textColorOff);
@@ -174,7 +174,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     /**
      * 关闭
      */
-    private void setPaintOn(){
+    protected void setPaintOn(){
         paintTrack.setColor(trackColorOn);
         paintThumb.setColor(thumbColorOn);
         paintText.setColor(textColorOn);
@@ -200,17 +200,25 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         }
         this.isChecked = isChecked;
         if(isChecked){
-//            setPaintOff();
+            setPaintOff();
             startAnimator(getAnimatorValueOn(), getAnimatorValueOff());
             checked();
         }else{
-//            setPaintOn();
+            setPaintOn();
             startAnimator(getAnimatorValueOff(), getAnimatorValueOn());
             unChecked();
         }
         if(onCheckedListener!=null){
             onCheckedListener.onChecked(isChecked);
         }
+    }
+
+    /**
+     * 是否选中
+     * @return
+     */
+    public boolean isChecked(){
+        return isChecked;
     }
 
     protected int getBaseline(Paint paint){
