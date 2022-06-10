@@ -18,13 +18,13 @@ import android.util.AttributeSet;
  */
 public class LSwitch extends BaseSwitch{
 
-    protected int offTextX = 3;
-    protected int trackRadius; //背景 圆角
-    protected int trackHeight; //背景 高度
+    private int offTextX = 3;
+    private int trackRadius; //背景 圆角
+    private int trackHeight; //背景 高度
 
-    protected int thumbRadius; //滑块 圆角
-    protected int thumbHeight; //滑块 高度
-    protected int thumbWidth; //滑块 宽度
+    private int thumbRadius; //滑块 圆角
+    private int thumbHeight; //滑块 高度
+    private int thumbWidth; //滑块 宽度
 
     public LSwitch(Context context) {
         this(context, null);
