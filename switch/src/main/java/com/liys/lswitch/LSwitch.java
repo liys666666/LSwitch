@@ -63,7 +63,7 @@ public class LSwitch extends BaseSwitch{
 
 
     @Override
-    protected float getAnimatorValueOff() {
+    protected float getAnimatorValueStart() {
         int value = getMeasuredWidth()-thumbWidth-(trackHeight-thumbHeight)/2;
         if(value<0){
             value=0;
@@ -73,7 +73,7 @@ public class LSwitch extends BaseSwitch{
     }
 
     @Override
-    protected float getAnimatorValueOn() {
+    protected float getAnimatorValueEnd() {
         int value = (trackHeight-thumbHeight)/2;
         if(value<0){
             value=0;
@@ -134,9 +134,9 @@ public class LSwitch extends BaseSwitch{
         if(isShowText){
             int baseline = getBaseline(paintText);
             if(isChecked){
-                canvas.drawText(textOff, (mWidth-thumbWidth)/2-getTextWidth(paintText, textOff)/2+offTextX, baseline, paintText);
+                canvas.drawText(textOn, (mWidth-thumbWidth)/2-getTextWidth(paintText, textOff)/2+offTextX, baseline, paintText);
             }else{
-                canvas.drawText(textOn, mWidth-(mWidth-thumbWidth)/2-getTextWidth(paintText, textOn)/2-offTextX, baseline, paintText);
+                canvas.drawText(textOff, mWidth-(mWidth-thumbWidth)/2-getTextWidth(paintText, textOn)/2-offTextX, baseline, paintText);
             }
         }
     }

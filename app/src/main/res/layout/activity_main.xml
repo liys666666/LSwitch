@@ -13,6 +13,7 @@
         android:layout_height="60dp"
         android:layout_margin="20dp"
         android:layout_gravity="center"
+        app:checked = "false"
         app:text_show="true"
         app:text_size_off="18sp"
         app:text_size_on="18dp"/>

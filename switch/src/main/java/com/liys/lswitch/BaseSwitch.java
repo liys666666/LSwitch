@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     protected int textColorOff = Color.WHITE; //字体颜色
     protected int textColorOn = Color.WHITE;
     protected boolean isShowText; //是否显示文字
-    protected boolean isChecked;
+    protected boolean isChecked = false;
     protected OnCheckedListener onCheckedListener;
 
     //动画
@@ -73,8 +74,8 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
     }
 
     protected abstract void postInit();
-    protected abstract float getAnimatorValueOff(); //动画开始的值
-    protected abstract float getAnimatorValueOn(); //动画结束的值
+    protected abstract float getAnimatorValueStart(); //动画开始的值
+    protected abstract float getAnimatorValueEnd(); //动画结束的值
 
     protected void animatorEnd(){} //动画结束--执行的方法
     protected void unChecked(){} //选中--执行的方法
@@ -88,13 +89,13 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseSwitch);
         //获取自定义属性的值
         //off
-        trackColorOff = typedArray.getColor(R.styleable.BaseSwitch_track_color_off, Color.parseColor("#F8933B"));
+        trackColorOff = typedArray.getColor(R.styleable.BaseSwitch_track_color_off, Color.parseColor("#BECBE4"));
         thumbColorOff = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_off, Color.WHITE);
         textColorOff = typedArray.getColor(R.styleable.BaseSwitch_text_color_off, Color.WHITE);
         textSizeOff = typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_text_size_off, 10);
         textOff = typedArray.getString(R.styleable.BaseSwitch_text_off);
         if(textOff==null){
-            textOff = "开";
+            textOff = "关";
         }
 
         //stroke属性
@@ -103,13 +104,13 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         strokeWidth =  typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_stroke_width, dp2px(1));
 
         //on
-        trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#BECBE4"));
+        trackColorOn = typedArray.getColor(R.styleable.BaseSwitch_track_color_on, Color.parseColor("#F8933B"));
         thumbColorOn = typedArray.getColor(R.styleable.BaseSwitch_thumb_color_on, Color.WHITE);
         textColorOn = typedArray.getColor(R.styleable.BaseSwitch_text_color_on, Color.WHITE);
         textSizeOn = typedArray.getDimensionPixelOffset(R.styleable.BaseSwitch_text_size_off, 10);
         textOn = typedArray.getString(R.styleable.BaseSwitch_text_on);
         if(textOn==null){
-            textOn = "关";
+            textOn = "开";
         }
 
         //其它属性
@@ -139,7 +140,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
         postInit();
-        animatorValue = (isChecked?getAnimatorValueOff():getAnimatorValueOn());
+        animatorValue = (isChecked?getAnimatorValueStart():getAnimatorValueEnd());
         invalidate();
     }
 
@@ -153,33 +154,31 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         paintText.setAntiAlias(true);
         paintStroke.setStrokeWidth(strokeWidth);
         paintStroke.setStyle(Paint.Style.STROKE);
+        resetPaint();
+    }
+
+    protected void resetPaint(){
         if(isChecked){
-            setPaintOff();
+            paintTrack.setColor(trackColorOn);
+            paintThumb.setColor(thumbColorOn);
+            paintText.setColor(textColorOn);
+            paintText.setTextSize(textSizeOn);
+            paintStroke.setColor(strokeColorOn);
         }else{
-            setPaintOn();
+            paintTrack.setColor(trackColorOff);
+            paintThumb.setColor(thumbColorOff);
+            paintText.setColor(textColorOff);
+            paintStroke.setColor(strokeColorOff);
+            paintText.setTextSize(textSizeOff);
         }
     }
 
-    /**
-     * 打开
-     */
-    protected void setPaintOff(){
-        paintTrack.setColor(trackColorOff);
-        paintThumb.setColor(thumbColorOff);
-        paintText.setColor(textColorOff);
-        paintStroke.setColor(strokeColorOff);
-        paintText.setTextSize(textSizeOff);
-    }
-
-    /**
-     * 关闭
-     */
-    protected void setPaintOn(){
-        paintTrack.setColor(trackColorOn);
-        paintThumb.setColor(thumbColorOn);
-        paintText.setColor(textColorOn);
-        paintText.setTextSize(textSizeOn);
-        paintStroke.setColor(strokeColorOn);
+    protected void startAnimator(){
+        if(isChecked) {
+            startAnimator(getAnimatorValueEnd(), getAnimatorValueStart());
+        }else{
+            startAnimator(getAnimatorValueStart(), getAnimatorValueEnd());
+        }
     }
 
     public void setOnCheckedListener(OnCheckedListener onCheckedListener) {
@@ -199,13 +198,11 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
             return;
         }
         this.isChecked = isChecked;
+        resetPaint();
+        startAnimator();
         if(isChecked){
-            setPaintOff();
-            startAnimator(getAnimatorValueOn(), getAnimatorValueOff());
             checked();
         }else{
-            setPaintOn();
-            startAnimator(getAnimatorValueOff(), getAnimatorValueOn());
             unChecked();
         }
         if(onCheckedListener!=null){
@@ -251,11 +248,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
 
                 //判断是否超过中间值
                 if(Math.abs(startValue-animatorValue)>Math.abs(endValue-animatorValue)){ //超过一半
-                    if(isChecked){
-                        setPaintOff();
-                    }else{
-                        setPaintOn();
-                    }
+                    resetPaint();
                 }
 
                 if(animatorValue==endValue){ //动画结束

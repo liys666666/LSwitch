@@ -1,8 +1,10 @@
 package com.liys.lswitchs;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SeekBar;
 
+import com.liys.lswitch.BaseSwitch;
 import com.liys.lswitch.LSwitch;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             seekBars[i].setOnSeekBarChangeListener(this);
             seekBars[i].setProgress(seekBars[i].getMax());
         }
+
+        lswitch.setOnCheckedListener(new BaseSwitch.OnCheckedListener() {
+            @Override
+            public void onChecked(boolean isChecked) {
+                Log.d("66", "isChecked="+isChecked);
+            }
+        });
     }
 
     @Override

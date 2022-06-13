@@ -33,12 +33,12 @@ public class MySwitch extends BaseSwitch{
 
 
     @Override
-    protected float getAnimatorValueOff() {
+    protected float getAnimatorValueStart() {
         return mHeight-mWidth/2;
     }
 
     @Override
-    protected float getAnimatorValueOn() {
+    protected float getAnimatorValueEnd() {
         return mWidth/2;
     }
 
