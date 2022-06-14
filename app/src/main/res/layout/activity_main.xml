@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000">
+    android:background="#00000060">
 
     <com.liys.lswitch.LSwitch
         android:id="@+id/lswitch"
@@ -16,7 +16,9 @@
         app:checked = "false"
         app:text_show="true"
         app:text_size_off="18sp"
-        app:text_size_on="18dp"/>
+        app:text_size_on="18dp"
+        app:stroke_width="1dp"
+        app:text_color_on="#000000"/>
     <com.liys.lswitch.LSwitch
         android:layout_width="100px"
         android:layout_height="40px"

@@ -113,7 +113,7 @@ public class LSwitch extends BaseSwitch{
     public void drawThumb(Canvas canvas) {
         int thumbTop = (mHeight-thumbHeight)/2;
         int thumbBottom = thumbTop+thumbHeight;
-        canvas.drawRoundRect(new RectF(animatorValue, thumbTop, animatorValue+thumbWidth, thumbBottom), thumbRadius, thumbRadius, paintThumb);
+        canvas.drawRoundRect(new RectF(animatorValue+strokeWidth, thumbTop+strokeWidth, animatorValue+thumbWidth-strokeWidth, thumbBottom-strokeWidth), thumbRadius, thumbRadius, paintThumb);
     }
 
     /**
@@ -121,9 +121,13 @@ public class LSwitch extends BaseSwitch{
      * @param canvas
      */
     public void drawStroke(Canvas canvas) {
-//        int trackTop = (mHeight-trackHeight)/2;
-//        int trackBottom = trackTop+trackHeight;
-//        canvas.drawRoundRect(new RectF(0, trackTop, mWidth, trackBottom), trackRadius, trackRadius, paintStroke);
+        int trackTop = (mHeight-trackHeight)/2;
+        int trackBottom = trackTop+trackHeight;
+        canvas.drawRoundRect(new RectF(strokeWidth, trackTop+strokeWidth, mWidth-strokeWidth, trackBottom-strokeWidth), trackRadius, trackRadius, paintStroke);
+
+        int thumbTop = (mHeight-thumbHeight)/2;
+        int thumbBottom = thumbTop+thumbHeight;
+        canvas.drawRoundRect(new RectF(animatorValue+strokeWidth, thumbTop+strokeWidth, animatorValue+thumbWidth-strokeWidth, thumbBottom-strokeWidth), thumbRadius, thumbRadius, paintStroke);
     }
 
     /**
