@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
         lswitch = findViewById(R.id.lswitch);
 
+        lswitch.setChecked(true);
+
         for (int i = 0; i < seekBars.length; i++) {
             seekBars[i] = findViewById(ids[i]);
             seekBars[i].setOnSeekBarChangeListener(this);

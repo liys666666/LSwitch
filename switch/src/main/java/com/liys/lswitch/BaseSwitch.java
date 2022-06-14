@@ -140,7 +140,7 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
         postInit();
-        animatorValue = (isChecked?getAnimatorValueStart():getAnimatorValueEnd());
+        animatorValue = (isChecked?getAnimatorValueEnd():getAnimatorValueStart());
         invalidate();
     }
 
@@ -175,9 +175,11 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
 
     protected void startAnimator(){
         if(isChecked) {
-            startAnimator(getAnimatorValueEnd(), getAnimatorValueStart());
-        }else{
+            Log.d("66", "true="+getAnimatorValueEnd());
             startAnimator(getAnimatorValueStart(), getAnimatorValueEnd());
+        }else{
+            Log.d("66", "false");
+            startAnimator(getAnimatorValueEnd(), getAnimatorValueStart());
         }
     }
 
@@ -239,13 +241,19 @@ public abstract class BaseSwitch extends View implements View.OnClickListener {
      * @param startValue 开始的值
      * @param endValue 结束的值
      */
+    ValueAnimator animator;
     protected void startAnimator(final float startValue, final float endValue){
-        ValueAnimator animator = ValueAnimator.ofFloat(startValue, endValue);
+        if(mWidth==0){
+            return;
+        }
+        if(animator!=null){
+            animator.end();
+        }
+        animator = ValueAnimator.ofFloat(startValue, endValue);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 animatorValue = (float)animation.getAnimatedValue();
-
                 //判断是否超过中间值
                 if(Math.abs(startValue-animatorValue)>Math.abs(endValue-animatorValue)){ //超过一半
                     resetPaint();

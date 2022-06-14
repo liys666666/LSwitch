@@ -24,21 +24,7 @@
         android:layout_height="40px"
         android:layout_margin="20dp"
         android:layout_gravity="center"
-        app:checked="true"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.liys.lswitchs.MySwitch
-            android:layout_width="60dp"
-            android:layout_height="100dp"
-            android:layout_margin="20dp"
-            android:layout_gravity="center"/>
-        <com.liys.lswitchs.MySwitch
-            android:layout_width="60dp"
-            android:layout_height="100dp"
-            android:layout_margin="20dp"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+        app:checked="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -113,6 +99,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="60"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.liys.lswitchs.MySwitch
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"/>
+        <com.liys.lswitchs.MySwitch
+            android:layout_width="60dp"
+            android:layout_height="100dp"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

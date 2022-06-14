@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 /**
  * @Description: 自定义Switch开关样式
@@ -64,20 +65,20 @@ public class LSwitch extends BaseSwitch{
 
     @Override
     protected float getAnimatorValueStart() {
-        int value = getMeasuredWidth()-thumbWidth-(trackHeight-thumbHeight)/2;
-        if(value<0){
-            value=0;
-        }
-        return value;
-//        return getMeasuredWidth()-thumbWidth;
-    }
-
-    @Override
-    protected float getAnimatorValueEnd() {
         int value = (trackHeight-thumbHeight)/2;
         if(value<0){
             value=0;
         }
+        return value;
+    }
+
+    @Override
+    protected float getAnimatorValueEnd() {
+        int value = getMeasuredWidth()-thumbWidth-(trackHeight-thumbHeight)/2;
+        if(value<0){
+            value=0;
+        }
+        Log.d("66", "getAnimatorValueEnd value="+value);
         return value;
     }
 
